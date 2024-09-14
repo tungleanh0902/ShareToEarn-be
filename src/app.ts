@@ -1,10 +1,42 @@
-/**
- * The following lines intialize dotenv,
- * so that env vars from the .env file are present in process.env
- */
-import * as dotenv from 'dotenv';
-dotenv.config();
+import express from 'express';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import { config } from './config';
+import cors from 'cors'; 
+import { errorHandler } from './middlewares/errorHandler';
 
-export const sum = (a: number, b: number): number => {
-  return a + b;
-};
+const app = express();
+app.use(cors()); 
+const port = 8080;
+require('dotenv').config();
+
+mongoose
+    .connect(config.database, { retryWrites: true, w: 'majority' })
+    .then(() => {
+        console.log('Mongo connected successfully.');
+    })
+    .catch((error) => console.log(error));
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
+
+import { manageKey } from "./key.route";
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.use("/api/key", manageKey);
+
+// app.use("/", async (req: any, res: any, next: any) => {
+//   return res.send('Hello')
+// });
+
+app.use(errorHandler)
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});

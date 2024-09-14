@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-typescript-template",
+  "name": "hackathon_be",
   "version": "1.368.0",
   "description": "A template for a nodejs application, using typescript",
   "main": "dist/src/index.js",
@@ -16,9 +16,18 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "dotenv": "^16.4.5"
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.2",
+    "express": "^4.21.0",
+    "mongoose": "^8.0.3",
+    "nodemon": "^3.0.1"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/jest": "^29.5.13",
     "@types/node": "^22.5.4",
     "@typescript-eslint/eslint-plugin": "^8.5.0",
