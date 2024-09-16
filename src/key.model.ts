@@ -5,6 +5,10 @@ const keySchema = new mongoose.Schema({
     address: {
         type: String,
         required: true,
+    },
+    tokenId: {
+        type: String,
+        required: true,
         unique: true,
     },
     key: {

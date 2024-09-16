@@ -1,5 +1,4 @@
-import mongoose from 'mongoose';
-import ethers from 'ethers'
+import { ethers } from 'ethers';
 
 const Key = require('./key.model')
 
@@ -8,17 +7,46 @@ export const onManageKey = {
         try {
             const address = req.body.address
             const key = req.body.key
+            const tokenId = req.body.tokenId
             const signature = req.body.signature
             const message = req.body.message
 
-            const signerAddr = ethers.verifyMessage(message, signature);
+            const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
                 res.status(401).send("Invalid signature");
             }
 
             await Key.create({
-                address: address,
-                key: key,
+                address,
+                tokenId,
+                key,
+            })
+
+            res.status(200).send(address);
+        } catch (err: any) {
+            console.log(err.message) 
+            res.status(400).send(err.message);
+        }
+        // no route matched
+        res.status(405).end();
+    },
+
+    doChangeKeyOwner: async (req: any, res: any, next: any) => {
+        try {
+            const address = req.body.address
+            const newOwner = req.body.newOwner
+            const tokenId = req.body.tokenId
+            const signature = req.body.signature
+            const message = req.body.message
+            console.log("doChangeKeyOwner");
+
+            const signerAddr = ethers.utils.verifyMessage(message, signature);
+            if (signerAddr !== address) {
+                res.status(401).send("Invalid signature");
+            }
+
+            await Key.findOneAndUpdate({tokenId}, {
+                address: newOwner,
             })
 
             res.status(200).send(address);
@@ -31,10 +59,13 @@ export const onManageKey = {
     },
 
     doGetKey: async (req: any, res: any, next: any) => {
+        console.log("doGetKey");
+
         try {
-            const address = req.query.address
+            const tokenId = req.query.tokenId
+
             let keyRecord = await Key.findOne({
-                address: address
+                tokenId
             }).exec()
             res.status(200).send(keyRecord);
         } catch (err: any) {
