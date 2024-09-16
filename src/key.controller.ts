@@ -38,7 +38,6 @@ export const onManageKey = {
             const tokenId = req.body.tokenId
             const signature = req.body.signature
             const message = req.body.message
-            console.log("doChangeKeyOwner");
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
@@ -59,8 +58,6 @@ export const onManageKey = {
     },
 
     doGetKey: async (req: any, res: any, next: any) => {
-        console.log("doGetKey");
-
         try {
             const tokenId = req.query.tokenId
 
