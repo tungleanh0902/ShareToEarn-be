@@ -21,7 +21,9 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
-import { manageKey } from "./key.route";
+import { manageKey } from "./nftAuction/key.route";
+
+import { managePost } from "./shareToEarn/routes/post.route";
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -30,6 +32,9 @@ app.use(function(req, res, next) {
 });
 
 app.use("/api/key", manageKey);
+
+app.use("/api/post", managePost);
+
 
 // app.use("/", async (req: any, res: any, next: any) => {
 //   return res.send('Hello')
