@@ -14,7 +14,7 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
-                res.status(401).send("Invalid signature");
+                return res.status(401).send("Invalid signature");
             }
 
             let now = new Date();
@@ -26,13 +26,11 @@ export const onManagePost = {
                 isRewarded: false,
             })
 
-            res.status(200).send(post);
+            return res.status(200).send(post);
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
-        // no route matched
-        res.status(405).end();
     },
 
     doEditPost: async (req: any, res: any, next: any) => {
@@ -45,7 +43,7 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
-                res.status(401).send("Invalid signature");
+                return res.status(401).send("Invalid signature");
             }
 
             let postRecord = await Post.findOne({
@@ -53,20 +51,18 @@ export const onManagePost = {
             }).exec()
 
             if (address !== postRecord.address) {
-                res.status(400).send("Not post creator");
+                return res.status(400).send("Not post creator");
             }
 
             await Post.findByIdAndUpdate(postId, {
                 content
             })
 
-            res.status(200).send(address);
+            return res.status(200).send(address);
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
-        // no route matched
-        res.status(405).end();
     },
 
     doReward: async (req: any, res: any, next: any) => {
@@ -78,27 +74,25 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
-                res.status(401).send("Invalid signature");
+                return res.status(401).send("Invalid signature");
             }
             let postRecord = await Post.findOne({
                 postId
             }).exec()
 
             if (address !== postRecord.address) {
-                res.status(400).send("Not post creator");
+                return res.status(400).send("Not post creator");
             }
 
             await Post.findOneAndUpdate({postId}, {
                 isRewarded: true,
             })
             
-            res.status(200).send({isRewarded: true});
+            return res.status(200).send({isRewarded: true});
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
-        // no route matched
-        res.status(405).end();
     },
 
     doTakeRewardBack: async (req: any, res: any, next: any) => {
@@ -110,7 +104,7 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
-                res.status(401).send("Invalid signature");
+                return res.status(401).send("Invalid signature");
             }
 
             let postRecord = await Post.findOne({
@@ -118,24 +112,22 @@ export const onManagePost = {
             }).exec()
 
             if (address !== postRecord.address) {
-                res.status(400).send("Not post creator");
+                return res.status(400).send("Not post creator");
             }
             let now = new Date()
             if (postRecord.timeout > now.getTime()) {
-                res.status(400).send("Can not be withdrawn yet");
+                return res.status(400).send("Can not be withdrawn yet");
             }
 
             await Post.findOneAndUpdate({postId}, {
                 isRewarded: true,
             })
             
-            res.status(200).send({isRewarded: true});
+            return res.status(200).send({isRewarded: true});
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
-        // no route matched
-        res.status(405).end();
     },
 
     doSaveComment: async (req: any, res: any, next: any) => {
@@ -148,7 +140,7 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
-                res.status(401).send("Invalid signature");
+                return res.status(401).send("Invalid signature");
             }
 
             let comment = await Comment.create({
@@ -157,13 +149,13 @@ export const onManagePost = {
                 content
             })
 
-            res.status(200).send(comment);
+            return res.status(200).send(comment);
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
         // no route matched
-        res.status(405).end();
+        return res.status(405).end();
     },
 
     doEditComment: async (req: any, res: any, next: any) => {
@@ -176,7 +168,7 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
-                res.status(401).send("Invalid signature");
+                return res.status(401).send("Invalid signature");
             }
 
             let commentRecord = await Comment.findOne({
@@ -184,32 +176,32 @@ export const onManagePost = {
             }).exec()
 
             if (address !== commentRecord.address) {
-                res.status(400).send("Not comment creator");
+                return res.status(400).send("Not comment creator");
             }
 
             await Comment.findByIdAndUpdate(commentId, {
                 content
             })
 
-            res.status(200).send(address);
+            return res.status(200).send(address);
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
         // no route matched
-        res.status(405).end();
+        return res.status(405).end();
     },
 
     doGetPosts: async (req: any, res: any, next: any) => {
         try {
             let postRecords = await Post.find()
-            res.status(200).send(postRecords);
+            return res.status(200).send(postRecords);
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
         // no route matched
-        res.status(405).end();
+        return res.status(405).end();
     },
 
     doGetCommentsinPosts: async (req: any, res: any, next: any) => {
@@ -217,12 +209,12 @@ export const onManagePost = {
             let commentRecords = await Comment.find({
                 postId: req.params.postId
             })
-            res.status(200).send(commentRecords);
+            return res.status(200).send(commentRecords);
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
         // no route matched
-        res.status(405).end();
+        return res.status(405).end();
     }
 }

@@ -13,7 +13,7 @@ export const onManageKey = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
-                res.status(401).send("Invalid signature");
+                return res.status(401).send("Invalid signature");
             }
 
             await Key.create({
@@ -22,13 +22,11 @@ export const onManageKey = {
                 key,
             })
 
-            res.status(200).send(address);
+            return res.status(200).send(address);
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
-        // no route matched
-        res.status(405).end();
     },
 
     doChangeKeyOwner: async (req: any, res: any, next: any) => {
@@ -41,20 +39,18 @@ export const onManageKey = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
-                res.status(401).send("Invalid signature");
+                return res.status(401).send("Invalid signature");
             }
 
             await Key.findOneAndUpdate({tokenId}, {
                 address: newOwner,
             })
 
-            res.status(200).send(address);
+            return res.status(200).send(address);
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
-        // no route matched
-        res.status(405).end();
     },
 
     doGetKey: async (req: any, res: any, next: any) => {
@@ -64,12 +60,10 @@ export const onManageKey = {
             let keyRecord = await Key.findOne({
                 tokenId
             }).exec()
-            res.status(200).send(keyRecord);
+            return res.status(200).send(keyRecord);
         } catch (err: any) {
             console.log(err.message) 
-            res.status(400).send(err.message);
+            return res.status(400).send(err.message);
         }
-        // no route matched
-        res.status(405).end();
     }
 }
