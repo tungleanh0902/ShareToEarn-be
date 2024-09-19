@@ -12,7 +12,7 @@ export const onManageKey = {
             const message = req.body.message
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
-            if (signerAddr !== address) {
+            if (signerAddr.toLocaleLowerCase() != address) {
                 return res.status(401).send("Invalid signature");
             }
 

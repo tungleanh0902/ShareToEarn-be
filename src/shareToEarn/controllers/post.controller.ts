@@ -13,7 +13,7 @@ export const onManagePost = {
             const message = req.body.message
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
-            if (signerAddr !== address) {
+            if (signerAddr.toLocaleLowerCase() != address) {
                 return res.status(401).send("Invalid signature");
             }
 
@@ -40,9 +40,9 @@ export const onManagePost = {
             const signature = req.body.signature
             const message = req.body.message
             const postId = req.body.postId
-
+            
             const signerAddr = ethers.utils.verifyMessage(message, signature);
-            if (signerAddr !== address) {
+            if (signerAddr.toLocaleLowerCase() != address) {
                 return res.status(401).send("Invalid signature");
             }
 
@@ -73,7 +73,7 @@ export const onManagePost = {
             const postId = req.body.postId
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
-            if (signerAddr !== address) {
+            if (signerAddr.toLocaleLowerCase() !== address) {
                 return res.status(401).send("Invalid signature");
             }
             let postRecord = await Post.findOne({
@@ -103,7 +103,7 @@ export const onManagePost = {
             const postId = req.body.postId
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
-            if (signerAddr !== address) {
+            if (signerAddr.toLocaleLowerCase() != address) {
                 return res.status(401).send("Invalid signature");
             }
 
@@ -139,7 +139,7 @@ export const onManagePost = {
             const message = req.body.message
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
-            if (signerAddr !== address) {
+            if (signerAddr.toLocaleLowerCase() != address) {
                 return res.status(401).send("Invalid signature");
             }
 
@@ -167,7 +167,7 @@ export const onManagePost = {
             const message = req.body.message
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
-            if (signerAddr !== address) {
+            if (signerAddr.toLocaleLowerCase() != address) {
                 return res.status(401).send("Invalid signature");
             }
 
