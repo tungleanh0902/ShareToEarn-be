@@ -12,8 +12,7 @@ export const onManagePost = {
             const signature = req.body.signature
             const message = req.body.message
 
-            const arrayifyMessage = ethers.utils.arrayify(message)
-            const signerAddr = ethers.utils.verifyMessage(arrayifyMessage, signature);
+            const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
                 return res.status(401).send("Invalid signature");
             }
@@ -42,8 +41,7 @@ export const onManagePost = {
             const message = req.body.message
             const postId = req.body.postId
 
-            const arrayifyMessage = ethers.utils.arrayify(message)
-            const signerAddr = ethers.utils.verifyMessage(arrayifyMessage, signature);
+            const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
                 return res.status(401).send("Invalid signature");
             }
@@ -74,8 +72,7 @@ export const onManagePost = {
             const message = req.body.message
             const postId = req.body.postId
 
-            const arrayifyMessage = ethers.utils.arrayify(message)
-            const signerAddr = ethers.utils.verifyMessage(arrayifyMessage, signature);
+            const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
                 return res.status(401).send("Invalid signature");
             }
@@ -105,8 +102,7 @@ export const onManagePost = {
             const message = req.body.message
             const postId = req.body.postId
 
-            const arrayifyMessage = ethers.utils.arrayify(message)
-            const signerAddr = ethers.utils.verifyMessage(arrayifyMessage, signature);
+            const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
                 return res.status(401).send("Invalid signature");
             }
@@ -142,8 +138,7 @@ export const onManagePost = {
             const signature = req.body.signature
             const message = req.body.message
 
-            const arrayifyMessage = ethers.utils.arrayify(message)
-            const signerAddr = ethers.utils.verifyMessage(arrayifyMessage, signature);
+            const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
                 return res.status(401).send("Invalid signature");
             }
@@ -171,8 +166,7 @@ export const onManagePost = {
             const signature = req.body.signature
             const message = req.body.message
 
-            const arrayifyMessage = ethers.utils.arrayify(message)
-            const signerAddr = ethers.utils.verifyMessage(arrayifyMessage, signature);
+            const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr !== address) {
                 return res.status(401).send("Invalid signature");
             }
