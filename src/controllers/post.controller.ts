@@ -98,6 +98,11 @@ export const onManagePost = {
                     message: "Not post creator"
                 });
             }
+            if (postRecord.isRewarded == true) {
+                return res.status(400).send({
+                    message: "Post already rewarded"
+                });
+            }
 
             await Post.findOneAndUpdate({postId}, {
                 isRewarded: true,
