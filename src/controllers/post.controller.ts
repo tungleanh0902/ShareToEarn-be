@@ -131,10 +131,7 @@ export const onManagePost = {
                 });
             }
 
-            let postRecord = await Post.findOne({
-                postId
-            }).exec()
-
+            let postRecord = await Post.findById(postId);
             if (address !== postRecord.address) {
                 return res.status(400).send({
                     message: "Not post creator"
