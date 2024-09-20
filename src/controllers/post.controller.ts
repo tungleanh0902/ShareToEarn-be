@@ -104,7 +104,7 @@ export const onManagePost = {
                 });
             }
 
-            await Post.findOneAndUpdate({postId}, {
+            await Post.findByIdAndUpdate(postId, {
                 isRewarded: true,
             })
             
