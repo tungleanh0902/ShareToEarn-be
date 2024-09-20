@@ -1,5 +1,6 @@
 import { time } from 'console';
 import { ethers } from 'ethers';
+import mongoose from 'mongoose';
 
 const Post = require('../models/post.model')
 const Comment = require('../models/comment.model')
@@ -154,8 +155,6 @@ export const onManagePost = {
             console.log(err.message) 
             return res.status(400).send(err.message);
         }
-        // no route matched
-        return res.status(405).end();
     },
 
     doEditComment: async (req: any, res: any, next: any) => {
@@ -188,8 +187,6 @@ export const onManagePost = {
             console.log(err.message) 
             return res.status(400).send(err.message);
         }
-        // no route matched
-        return res.status(405).end();
     },
 
     doGetPosts: async (req: any, res: any, next: any) => {
@@ -200,21 +197,17 @@ export const onManagePost = {
             console.log(err.message) 
             return res.status(400).send(err.message);
         }
-        // no route matched
-        return res.status(405).end();
     },
 
     doGetCommentsinPosts: async (req: any, res: any, next: any) => {
         try {
             let commentRecords = await Comment.find({
-                postId: req.params.postId
+                postId: req.query.postId
             })
             return res.status(200).send(commentRecords);
         } catch (err: any) {
             console.log(err.message) 
             return res.status(400).send(err.message);
         }
-        // no route matched
-        return res.status(405).end();
     }
 }
