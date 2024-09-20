@@ -20,17 +20,13 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
-import { manageKey } from "./nftAuction/key.route";
-
-import { managePost } from "./shareToEarn/routes/post.route";
+import { managePost } from "./routes/post.route";
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-
-app.use("/api/key", manageKey);
 
 app.use("/api/post", managePost);
 
