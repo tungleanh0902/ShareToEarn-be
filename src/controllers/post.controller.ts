@@ -1,4 +1,5 @@
 import { ethers } from 'ethers';
+import mongoose from 'mongoose';
 
 const Post = require('../models/post.model')
 const Comment = require('../models/comment.model')
@@ -83,17 +84,15 @@ export const onManagePost = {
             const signature = req.body.signature
             const message = req.body.message
             const postId = req.body.postId
-
+            console.log(address);
+            
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr.toLocaleLowerCase() !== address) {
                 return res.status(401).send({
                     message: "Invalid signature"
                 });
             }
-            let postRecord = await Post.findOne({
-                postId
-            }).exec()
-
+            let postRecord = await Post.findById(postId);
             if (address !== postRecord.address) {
                 return res.status(400).send({
                     message: "Not post creator"
