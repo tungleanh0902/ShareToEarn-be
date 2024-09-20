@@ -1,6 +1,4 @@
-import { time } from 'console';
 import { ethers } from 'ethers';
-import mongoose from 'mongoose';
 
 const Post = require('../models/post.model')
 const Comment = require('../models/comment.model')
@@ -15,7 +13,9 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr.toLocaleLowerCase() != address) {
-                return res.status(401).send("Invalid signature");
+                return res.status(401).send({
+                    message: "Invalid signature"
+                });
             }
 
             let now = new Date();
@@ -27,10 +27,14 @@ export const onManagePost = {
                 isRewarded: false,
             })
 
-            return res.status(200).send(post);
+            return res.status(200).send({
+                data: post
+            });
         } catch (err: any) {
             console.log(err.message) 
-            return res.status(400).send(err.message);
+            return res.status(400).send({
+                message: err.message
+            });
         }
     },
 
@@ -44,7 +48,9 @@ export const onManagePost = {
             
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr.toLocaleLowerCase() != address) {
-                return res.status(401).send("Invalid signature");
+                return res.status(401).send({
+                    message: "Invalid signature"
+                });
             }
 
             let postRecord = await Post.findOne({
@@ -52,17 +58,22 @@ export const onManagePost = {
             }).exec()
 
             if (address !== postRecord.address) {
-                return res.status(400).send("Not post creator");
+                return res.status(400).send({
+                    message: "Not post creator"
+                });
             }
 
             await Post.findByIdAndUpdate(postId, {
                 content
             })
 
-            return res.status(200).send(address);
+            return res.status(200).send({
+                data: address
+            });
         } catch (err: any) {
-            console.log(err.message) 
-            return res.status(400).send(err.message);
+            return res.status(400).send({
+                message: err.message
+            });
         }
     },
 
@@ -75,24 +86,31 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr.toLocaleLowerCase() !== address) {
-                return res.status(401).send("Invalid signature");
+                return res.status(401).send({
+                    message: "Invalid signature"
+                });
             }
             let postRecord = await Post.findOne({
                 postId
             }).exec()
 
             if (address !== postRecord.address) {
-                return res.status(400).send("Not post creator");
+                return res.status(400).send({
+                    message: "Not post creator"
+                });
             }
 
             await Post.findOneAndUpdate({postId}, {
                 isRewarded: true,
             })
             
-            return res.status(200).send({isRewarded: true});
+            return res.status(200).send({
+                data: {isRewarded: true}
+            });
         } catch (err: any) {
-            console.log(err.message) 
-            return res.status(400).send(err.message);
+            return res.status(400).send({
+                message: err.message
+            });
         }
     },
 
@@ -105,7 +123,9 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr.toLocaleLowerCase() != address) {
-                return res.status(401).send("Invalid signature");
+                return res.status(401).send({
+                    message: "Invalid signature"
+                });
             }
 
             let postRecord = await Post.findOne({
@@ -113,21 +133,28 @@ export const onManagePost = {
             }).exec()
 
             if (address !== postRecord.address) {
-                return res.status(400).send("Not post creator");
+                return res.status(400).send({
+                    message: "Not post creator"
+                });
             }
             let now = new Date()
             if (postRecord.timeout > now.getTime()) {
-                return res.status(400).send("Can not be withdrawn yet");
+                return res.status(400).send({
+                    message: "Post has not expired yet"
+                });
             }
 
             await Post.findOneAndUpdate({postId}, {
                 isRewarded: true,
             })
             
-            return res.status(200).send({isRewarded: true});
+            return res.status(200).send({
+                data: {isRewarded: true}
+            });
         } catch (err: any) {
-            console.log(err.message) 
-            return res.status(400).send(err.message);
+            return res.status(400).send({
+                message: err.message
+            });
         }
     },
 
@@ -141,7 +168,9 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr.toLocaleLowerCase() != address) {
-                return res.status(401).send("Invalid signature");
+                return res.status(401).send({
+                    message: "Invalid signature"
+                });
             }
 
             let comment = await Comment.create({
@@ -150,10 +179,13 @@ export const onManagePost = {
                 content
             })
 
-            return res.status(200).send(comment);
+            return res.status(200).send({
+                data: comment
+            });
         } catch (err: any) {
-            console.log(err.message) 
-            return res.status(400).send(err.message);
+            return res.status(400).send({
+                message: err.message
+            });
         }
     },
 
@@ -167,7 +199,9 @@ export const onManagePost = {
 
             const signerAddr = ethers.utils.verifyMessage(message, signature);
             if (signerAddr.toLocaleLowerCase() != address) {
-                return res.status(401).send("Invalid signature");
+                return res.status(401).send({
+                    message: "Invalid signature"
+                });
             }
 
             let commentRecord = await Comment.findOne({
@@ -175,27 +209,35 @@ export const onManagePost = {
             }).exec()
 
             if (address !== commentRecord.address) {
-                return res.status(400).send("Not comment creator");
+                return res.status(400).send({
+                    message: "Not comment creator"
+                });
             }
 
             await Comment.findByIdAndUpdate(commentId, {
                 content
             })
 
-            return res.status(200).send(address);
+            return res.status(200).send({
+                data: address
+            });
         } catch (err: any) {
-            console.log(err.message) 
-            return res.status(400).send(err.message);
+            return res.status(400).send({
+                message: err.message
+            });
         }
     },
 
     doGetPosts: async (req: any, res: any, next: any) => {
         try {
             let postRecords = await Post.find()
-            return res.status(200).send(postRecords);
+            return res.status(200).send({
+                data: postRecords
+            });
         } catch (err: any) {
-            console.log(err.message) 
-            return res.status(400).send(err.message);
+            return res.status(400).send({
+                message: err.message
+            });
         }
     },
 
@@ -204,10 +246,13 @@ export const onManagePost = {
             let commentRecords = await Comment.find({
                 postId: req.query.postId
             })
-            return res.status(200).send(commentRecords);
+            return res.status(200).send({
+                data: commentRecords
+            });
         } catch (err: any) {
-            console.log(err.message) 
-            return res.status(400).send(err.message);
+            return res.status(400).send({
+                message: err.message
+            });
         }
     }
 }
