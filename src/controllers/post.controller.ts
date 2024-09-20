@@ -20,11 +20,10 @@ export const onManagePost = {
             }
 
             let now = new Date();
-            let nextYear = new Date(now.getFullYear()+1, now.getMonth(), 1)
             let post = await Post.create({
                 address,
                 content,
-                timeout: nextYear.getTime(),
+                timeout: now.setMinutes(now.getMinutes() + 15),
                 isRewarded: false,
             })
 
