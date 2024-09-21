@@ -137,6 +137,11 @@ export const onManagePost = {
                     message: "Not post creator"
                 });
             }
+            if (postRecord.isRewarded == true) {
+                return res.status(400).send({
+                    message: "Already take back"
+                });
+            }
             let now = new Date()
             if (postRecord.timeout > now.getTime()) {
                 return res.status(400).send({
